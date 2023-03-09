@@ -2,14 +2,11 @@
 
 clear
 
-export CC=/usr/bin/clang
-export CXX=/usr/bin/clang++
-
 rm -rf build
 mkdir build
 pushd build
 
-conan install .. --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True -pr clang-profile
+conan install .. --build=missing -c tools.system.package_manager:mode=install -c tools.system.package_manager:sudo=True 
 cmake .. -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=True
 cmake --build .
 popd

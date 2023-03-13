@@ -13,7 +13,7 @@ CHIP8::CHIP8() {
 }
 
 
-auto CHIP8::loadROM(std::string path) -> int {
+auto CHIP8::load_ROM(std::string& path) -> int {
     std::ifstream file;
     file.open(path, std::ios::binary);
 
@@ -36,13 +36,13 @@ auto CHIP8::loadROM(std::string path) -> int {
 // Increment by 2 since every instruction is 2 bytes
 // Whereas we can access our memory 1-byte at a time
 // Since we're getting words of u8 instead of u16s
-auto CHIP8::incrementPC() -> void {
-    programCounter += 2;
+auto CHIP8::increment_pc() -> void {
+    program_counter += 2;
 }
 
 auto CHIP8::cycle() -> void {
     // Read 1 byte (8 bits) from memory and store in opcode
-    opcode = memory[programCounter] << 8 | memory[programCounter + 1];
+    opcode = memory[program_counter] << 8 | memory[program_counter + 1];
 
     auto firstNibble = static_cast<uint8_t>(opcode >> 12);
 
@@ -52,20 +52,20 @@ auto CHIP8::cycle() -> void {
                 std::fill_n(graphics.begin(), graphics.size(), 0);
             } else if (opcode == 0x00EE) {
                 sp -= 1;
-                programCounter = stack[sp];
+                program_counter = stack[sp];
             }
 
-            incrementPC();
+            increment_pc();
             break;
 
         case 0x1:
-            programCounter = opcode & 0x0FFF;
+            program_counter = opcode & 0x0FFF;
             break;
 
         case 0x2:
-            stack[sp] = programCounter; // store programCounter on the stack
+            stack[sp] = program_counter; // store programCounter on the stack
             sp += 1; // increment stack pointer
-            programCounter = opcode & 0x0FFF; 
+            program_counter = opcode & 0x0FFF; 
             break;
 
         case 0x3: {
@@ -73,10 +73,10 @@ auto CHIP8::cycle() -> void {
             auto kk = static_cast<uint8_t>(opcode & 0x00FF);
 
             if (registers[x] == kk) {
-                incrementPC();
+                increment_pc();
             }
 
-            incrementPC();
+            increment_pc();
             break;
         }
 
@@ -85,10 +85,10 @@ auto CHIP8::cycle() -> void {
             auto kk = static_cast<uint8_t>(opcode & 0x00FF);
 
             if (registers[x] != kk) {
-                incrementPC();
+                increment_pc();
             }
 
-            incrementPC();
+            increment_pc();
             break;
         }
         
@@ -97,10 +97,10 @@ auto CHIP8::cycle() -> void {
             auto y = static_cast<uint8_t>((opcode & 0x00F0) >> 4);
 
             if (registers[x] == registers[y]) {
-                incrementPC();
+                increment_pc();
             }
 
-            incrementPC();
+            increment_pc();
             break;
         }
 
@@ -110,7 +110,7 @@ auto CHIP8::cycle() -> void {
 
             registers[x] = static_cast<uint8_t>(kk);
 
-            incrementPC();
+            increment_pc();
             break;
         }
 
@@ -120,7 +120,7 @@ auto CHIP8::cycle() -> void {
 
             registers[x] += static_cast<uint8_t>(kk);
 
-            incrementPC();
+            increment_pc();
             break;
         }
 
@@ -205,7 +205,7 @@ auto CHIP8::cycle() -> void {
                 }
             }
 
-            incrementPC();
+            increment_pc();
             break;
         }
 
@@ -214,21 +214,21 @@ auto CHIP8::cycle() -> void {
             auto y = static_cast<uint8_t>((opcode & 0x00F0) >> 4);
 
             if (registers[x] != registers[y]) {
-                incrementPC();
+                increment_pc();
             }
 
-            incrementPC();
+            increment_pc();
             break;
         }
 
         case 0xA: {
             index = opcode & 0x0FFF;
-            incrementPC();
+            increment_pc();
             break;
         }
 
         case 0xB: {
-            programCounter = (opcode & 0x0FFF) + static_cast<uint16_t>(registers[0]);
+            program_counter = (opcode & 0x0FFF) + static_cast<uint16_t>(registers[0]);
             break;
         }
 
@@ -241,7 +241,7 @@ auto CHIP8::cycle() -> void {
             std::uniform_int_distribution<> distribution{0x0, 0xFF}; // define the range
 
             registers[x] = distribution(gen) & kk;
-            incrementPC();
+            increment_pc();
             break;
         }
 
@@ -264,7 +264,7 @@ auto CHIP8::cycle() -> void {
                 }
             }
 
-            incrementPC();
+            increment_pc();
             break;
         }
 
@@ -274,15 +274,15 @@ auto CHIP8::cycle() -> void {
 
             if (kk == 0x9E) {
                 if (keys[registers[x]] == 1) {
-                    incrementPC();
+                    increment_pc();
                 }
             } else if (kk == 0xA1) {
                 if (keys[registers[x]] != 1) {
-                    incrementPC();
+                    increment_pc();
                 }
             }
             
-            incrementPC();
+            increment_pc();
             break;
         }
 
@@ -293,7 +293,7 @@ auto CHIP8::cycle() -> void {
 
             switch (kk) {
                 case 0x7: {
-                    registers[x] = delayTimer;
+                    registers[x] = delay_timer;
 
                     break;
                 }
@@ -321,12 +321,12 @@ auto CHIP8::cycle() -> void {
                 }
 
                 case 0x15: {
-                    delayTimer = registers[x];
+                    delay_timer = registers[x];
                     break;
                 }
 
                 case 0x18: {
-                    soundTimer = registers[x];
+                    sound_timer = registers[x];
                     break;
                 }
 
@@ -368,7 +368,7 @@ auto CHIP8::cycle() -> void {
                 }
             }
             
-            incrementPC();
+            increment_pc();
             break;
         }
     }

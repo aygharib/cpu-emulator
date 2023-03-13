@@ -28,17 +28,17 @@ public:
     
     CHIP8();
 
-    auto loadROM(std::string path) -> int;
+    auto load_ROM(std::string& path) -> int;
     auto cycle() -> void;
 
 private:
     uint16_t opcode{0}; // 4 hex numbers
     std::array<uint8_t, 16> registers{}; // 16 general purpose registers
     uint16_t index{0}; // special index register
-    uint16_t programCounter{0x200}; // special programCounter register
+    uint16_t program_counter{0x200}; // special programCounter register
 
-    uint8_t delayTimer{0};
-    uint8_t soundTimer{0};
+    uint8_t delay_timer{0};
+    uint8_t sound_timer{0};
 
     std::array<uint8_t, 4096> memory{}; // 4096 byte array (64 * 64)
     std::array<uint16_t, 16> stack{}; // keep track of stack of addresses
@@ -46,5 +46,5 @@ private:
 
     std::array<uint16_t, 16> keys{}; // what keys are being pressed
 
-    auto incrementPC() -> void;
+    auto increment_pc() -> void;
 };

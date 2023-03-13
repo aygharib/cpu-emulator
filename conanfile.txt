@@ -1,6 +1,6 @@
 [requires]
 fmt/9.1.0
-sfml/2.5.1
+sdl/2.26.1
 
 [generators]
 cmake

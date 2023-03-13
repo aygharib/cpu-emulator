@@ -39,9 +39,7 @@ auto main(int argc, char* argv[]) -> int {
     }
 
     auto romPath = std::string{argv[1]};
-
-    auto cpu = CHIP8{};
-    cpu.load_ROM(romPath);
+    auto cpu     = CHIP8{romPath};
 
     auto [window, renderer, texture] = initSDL();
     auto running                     = true;

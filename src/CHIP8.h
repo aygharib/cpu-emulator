@@ -26,9 +26,8 @@ class CHIP8 {
    public:
     std::array<uint8_t, 2048> graphics{};  // 2048 (64 * 32)
 
-    CHIP8();
+    CHIP8(std::string& path);
 
-    auto load_ROM(std::string& path) -> int;
     auto cycle() -> void;
 
    private:
@@ -46,5 +45,6 @@ class CHIP8 {
 
     std::array<uint16_t, 16> keys{};  // what keys are being pressed
 
+    auto load_ROM(std::string& path) -> int;
     auto increment_pc() -> void;
 };

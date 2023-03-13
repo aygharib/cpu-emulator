@@ -4,12 +4,14 @@
 #include <fstream>
 #include <random>
 
-CHIP8::CHIP8() {
+CHIP8::CHIP8(std::string& path) {
     auto insertIndex = 0;
     for (const auto& e : fontset) {
         memory.at(insertIndex) = e;
         insertIndex++;
     }
+
+    load_ROM(path);
 }
 
 auto CHIP8::load_ROM(std::string& path) -> int {

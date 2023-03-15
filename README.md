@@ -1,8 +1,13 @@
 # chip-8-emulator
 A CHIP-8 emulator (see [CHIP-8 Wikipedia](https://en.wikipedia.org/wiki/CHIP-8)) written in C++20.
 
-## Examples
+## Build instructions
+```shell
+./helper/build.sh
+./build/bin/CHIP8_EMULATOR example_rom.c8
+```
 
+## Examples
 ### IBM Logo
 ![image](https://user-images.githubusercontent.com/12767433/224769562-d3a3f1a9-606e-46e7-9525-53226dbeecbd.png)
 

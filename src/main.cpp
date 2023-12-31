@@ -1,8 +1,8 @@
 #include "CHIP8.h"
 
 #include <SDL2/SDL.h>
-#include <fmt/core.h>
 #include <chrono>
+#include <fmt/core.h>
 #include <string>
 #include <thread>
 #include <tuple>
@@ -13,16 +13,22 @@ auto initSDL() -> std::tuple<SDL_Window*, SDL_Renderer*, SDL_Texture*> {
     }
 
     // Aspect ratio must be 2:1
-    auto* window = SDL_CreateWindow(
-      "Chip-8 Emulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1024, 512, 0);
-    if (window == nullptr) { fmt::print("error creating window: {}\n", SDL_GetError()); }
+    auto* window = SDL_CreateWindow("Chip-8 Emulator", SDL_WINDOWPOS_CENTERED,
+                                    SDL_WINDOWPOS_CENTERED, 1024, 512, 0);
+    if (window == nullptr) {
+        fmt::print("error creating window: {}\n", SDL_GetError());
+    }
 
     auto* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == nullptr) { fmt::print("error creating renderer: {}\n", SDL_GetError()); }
+    if (renderer == nullptr) {
+        fmt::print("error creating renderer: {}\n", SDL_GetError());
+    }
 
-    auto* texture =
-      SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_STREAMING, 64, 32);
-    if (texture == nullptr) { fmt::print("error creating texture: {}\n", SDL_GetError()); }
+    auto* texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888,
+                                      SDL_TEXTUREACCESS_STREAMING, 64, 32);
+    if (texture == nullptr) {
+        fmt::print("error creating texture: {}\n", SDL_GetError());
+    }
 
     return {window, renderer, texture};
 }
@@ -39,11 +45,11 @@ auto main(int argc, char* argv[]) -> int {
     }
 
     auto romPath = std::string{argv[1]};
-    auto cpu     = CHIP8{romPath};
+    auto cpu = CHIP8{romPath};
 
     auto [window, renderer, texture] = initSDL();
-    auto running                     = true;
-    auto pixels                      = std::array<uint32_t, 4096>{};
+    auto running = true;
+    auto pixels = std::array<uint32_t, 4096>{};
 
     while (running) {
         // Run emulator cycle
@@ -67,7 +73,8 @@ auto main(int argc, char* argv[]) -> int {
             }
         }
 
-        if (SDL_UpdateTexture(texture, nullptr, &pixels, 64 * sizeof(uint32_t)) != 0) {
+        if (SDL_UpdateTexture(texture, nullptr, &pixels,
+                              64 * sizeof(uint32_t)) != 0) {
             fmt::print("error updating texture: {}\n", SDL_GetError());
         }
 

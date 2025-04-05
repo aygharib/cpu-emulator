@@ -30,6 +30,7 @@ public:
     CHIP8(std::string& path);
 
     auto cycle() -> void;
+    std::array<uint8_t, 4096> memory{}; // 4096 byte array (64 * 64)
 
 private:
     uint16_t opcode{0};                  // 4 hex numbers
@@ -40,7 +41,6 @@ private:
     uint8_t delay_timer{0};
     uint8_t sound_timer{0};
 
-    std::array<uint8_t, 4096> memory{}; // 4096 byte array (64 * 64)
     std::array<uint16_t, 16> stack{};   // keep track of stack of addresses
     uint16_t sp{0}; // stack pointer, the current thing on the stack (can be u4)
 
